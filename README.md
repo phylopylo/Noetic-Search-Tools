@@ -14,8 +14,12 @@ Install [uv](https://github.com/astral-sh/uv).
 
 Run linter:
 
-```uv run ruff check```
+```
+uv run ruff check
+```
 
 Run main.py:
 
-```uv run hello.py```
+```
+uv run hello.py
+```
