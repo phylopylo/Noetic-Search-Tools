@@ -11,7 +11,11 @@ WIP
 ## for Developers
 
 Install [uv](https://github.com/astral-sh/uv).
+
 Run linter:
+
 ```uv run ruff check```
+
 Run main.py:
+
 ```uv run hello.py```
