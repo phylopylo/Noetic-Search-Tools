@@ -8,7 +8,7 @@ let's build idiotproof tools that are straightforward, hackable and extensible. 
 
 WIP
 
-## for Developers
+## For Developers
 
 Install [uv](https://github.com/astral-sh/uv).
 
