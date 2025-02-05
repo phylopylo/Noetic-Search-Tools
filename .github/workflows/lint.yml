@@ -34,4 +34,4 @@ jobs:
         uv add ruff
     
     - name: Run Ruff
-      run: ruff check main.py
+      run: uv run ruff check
