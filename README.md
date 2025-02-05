@@ -23,3 +23,9 @@ Run main.py:
 ```
 uv run main.py
 ```
+
+Build Executable:
+
+```
+uv run pyinstaller main.py
+```
