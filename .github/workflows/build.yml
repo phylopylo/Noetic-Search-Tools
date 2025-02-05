@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -48,10 +49,17 @@ jobs:
         name: release-binary
         path: release/main
       
+    - name: Create Tag
+      run: |
+        TAG_NAME="release-$(date +%Y%m%d%H%M%S)"
+        git tag $TAG_NAME
+        git push origin $TAG_NAME
+        echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+      
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
+        tag_name: ${{ env.TAG_NAME }}
         files: release/main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
