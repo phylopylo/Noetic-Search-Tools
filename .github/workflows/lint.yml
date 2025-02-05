@@ -1,4 +1,4 @@
-name: Lint
+name: Ruff Linting
 
 on:
   push:
@@ -16,12 +16,16 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
-        
+        python-version: '3.11'
+    
     - name: Install uv
       run: |
         curl -LsSf https://astral.sh/uv/install.sh | sh
-        
-    - name: Run linter
-      run: uv run ruff check
-      # This will automatically fail the workflow if ruff finds any issues
+        echo "$HOME/.uv/bin" >> $GITHUB_PATH
+    
+    - name: Install dependencies with uv
+      run: |
+        uv pip install ruff
+    
+    - name: Run Ruff
+      run: ruff check main.py
