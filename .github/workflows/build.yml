@@ -50,8 +50,12 @@ jobs:
         path: release/main
       
     - name: Create Tag
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         TAG_NAME="release-$(date +%Y%m%d%H%M%S)"
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
         git tag $TAG_NAME
         git push origin $TAG_NAME
         echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
@@ -63,3 +67,4 @@ jobs:
         files: release/main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
