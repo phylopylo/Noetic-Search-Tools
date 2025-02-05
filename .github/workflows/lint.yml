@@ -34,4 +34,10 @@ jobs:
         uv add ruff
     
     - name: Run Ruff
-      run: uv run ruff check
+      run: |
+        OUTPUT=$(uv run ruff check)
+          echo "$OUTPUT"
+          if [[ "$OUTPUT" != *"All checks passed!"* ]]; then
+            echo "Linter Failure."
+            exit 1
+          fi
