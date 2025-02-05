@@ -23,10 +23,11 @@ jobs:
         curl -LsSf https://astral.sh/uv/install.sh | sh
         echo "$HOME/.uv/bin" >> $GITHUB_PATH
 
-    - name: Install Cairo
+    - name: Install System Dependencies 
       run: |
         sudo apt-get update
         sudo apt-get install -y libcairo2-dev
+        sudo apt-get install -y libgirepository1.0-dev
     
     - name: Install dependencies with uv
       run: |
