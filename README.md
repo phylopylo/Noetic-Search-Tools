@@ -21,5 +21,5 @@ uv run ruff check
 Run main.py:
 
 ```
-uv run hello.py
+uv run main.py
 ```

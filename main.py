@@ -1,12 +1,11 @@
 import gi
-gi.require_version('Gtk', '4.0')
-from gi.repository import Gtk, Gio, GLib
+from gi.repository import Gtk, GLib
 import os
 import threading
 import fitz  # PyMuPDF
 import queue
 import pandas as pd
-import io
+gi.require_version('Gtk', '4.0')
 
 log_errors = False
 
