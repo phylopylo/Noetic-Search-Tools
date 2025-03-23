@@ -10,6 +10,7 @@ dependencies = [
     "pygobject>=3.50.0",
     "pyinstaller>=6.11.1",
     "pymupdf>=1.25.2",
+    "python-docx>=1.1.0",
     "ruff>=0.9.4",
     "xlrd>=2.0.1",
 ]

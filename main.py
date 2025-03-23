@@ -5,6 +5,7 @@ import threading
 import fitz  # PyMuPDF
 import queue
 import pandas as pd
+from docx import Document
 gi.require_version('Gtk', '4.0')
 
 log_errors = False
@@ -56,13 +57,16 @@ class DocumentSearchApp(Gtk.Application):
         self.pdf_check = Gtk.CheckButton(label="PDF")
         self.csv_check = Gtk.CheckButton(label="CSV")
         self.excel_check = Gtk.CheckButton(label="Excel")
+        self.docx_check = Gtk.CheckButton(label="DOCX")
         self.case_sensitive_check = Gtk.CheckButton(label="Case-sensitive")
         self.pdf_check.set_active(True)
         self.csv_check.set_active(True)
         self.excel_check.set_active(True)
+        self.docx_check.set_active(True)
         types_box.append(self.pdf_check)
         types_box.append(self.csv_check)
         types_box.append(self.excel_check)
+        types_box.append(self.docx_check)
         types_box.append(self.case_sensitive_check)
         vbox.append(types_box)
         
@@ -125,6 +129,8 @@ class DocumentSearchApp(Gtk.Application):
             file_types.append('.csv')
         if self.excel_check.get_active():
             file_types.extend(['.xls', '.xlsx', '.xlsm'])
+        if self.docx_check.get_active():
+            file_types.append('.docx')
             
         if not file_types:
             self.text_buffer.set_text("Please select at least one file type to search.")
@@ -179,6 +185,22 @@ class DocumentSearchApp(Gtk.Application):
                 results.append(f"\nError processing {file_path}: {str(e)}")
         return results
     
+    def search_docx(self, docx_path, search_text, case_sensitive):
+        results = []
+        try:
+            doc = Document(docx_path)
+            for para_num, paragraph in enumerate(doc.paragraphs, 1):
+                text = paragraph.text
+                if search_text.lower() in text.lower():
+                    is_match = (search_text in text) or (search_text.lower() in text.lower() and not case_sensitive)
+                    if is_match:
+                        context = f"\nFile: {docx_path}\nParagraph: {para_num}\nContext: ...{text.strip()}..."
+                        results.append(context)
+        except Exception as e:
+            if log_errors:
+                results.append(f"\nError processing {docx_path}: {str(e)}")
+        return results
+    
     def search_worker(self):
         while True:
             folder, search_text, file_types, case_sensitive  = self.search_queue.get()
@@ -194,6 +216,8 @@ class DocumentSearchApp(Gtk.Application):
                             results.extend(self.search_pdf(file_path, search_text, case_sensitive))
                         elif file_lower.endswith(('.csv', '.xls', '.xlsx', '.xlsm')):
                             results.extend(self.search_spreadsheet(file_path, search_text, case_sensitive))
+                        elif file_lower.endswith('.docx'):
+                            results.extend(self.search_docx(file_path, search_text, case_sensitive))
             
             self.result_queue.put(results)
     
